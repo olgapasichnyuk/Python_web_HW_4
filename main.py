@@ -95,8 +95,6 @@ def run_socket_server():
         socket_server.close()
 
 
-
-
 def storage_update_json(data):
 
     data_parse = urllib.parse.unquote_plus(data.decode())
@@ -104,6 +102,7 @@ def storage_update_json(data):
     try:
         data_dict = {key: value for key, value in [el.split('=') for el in data_parse.split('&')]}
         dict_for_json = {str(datetime.now()): data_dict}
+        
         try:
             with open(JSON_STORAGE_FILE, 'r', encoding='utf-8') as fd:
                 loaded_dict = dict(json.loads(fd.read()))
@@ -123,9 +122,11 @@ def storage_update_json(data):
 
 
 if __name__ == '__main__':
+    
     logging.basicConfig(level=logging.DEBUG)
+    
     server_app = Thread(target=run_http_server)
-    server_socket = Thread(target=run_socket_server)
-
     server_app.start()
+    
+    server_socket = Thread(target=run_socket_server)
     server_socket.start()
